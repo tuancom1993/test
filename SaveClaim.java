@@ -1,4 +1,4 @@
-/*
+    /*
      * Acton
      */
     private void saveClaimPayment(boolean isNewClaimFlag, ClaimCanonical claimCanonical, UserInfoForm userInfoForm) {
@@ -24,7 +24,7 @@
             }
         }
 
-        if (listClaimPayment != null && listClaimPayment.size()>0) {
+        if (listClaimPayment != null && listClaimPayment.size() > 0) {
             for (ClaimPayment claimPayment : listClaimPayment) {
                 if (claimPayment.getClaimPaymentId() == null) {
                     com.aia.cmic.entity.ClaimPayment claimPaymentEntity = new com.aia.cmic.entity.ClaimPayment();
@@ -81,25 +81,27 @@
         }
         
         if (listClaimPolicy != null && listClaimPolicy.size() > 0) {
-            for (ClaimPolicyCanonical claimPolicyCanonical : listClaimPolicy) {
-                Insured insured = claimPolicyCanonical.getInsured();
-                if (insured.getInsuredId() == null) {
-                    com.aia.cmic.entity.Insured insuredEntity = new com.aia.cmic.entity.Insured();
-                    copyProperties(insured, insuredEntity);
-                    insuredEntity.setLastModifiedBy(userInfoForm.getUserId());
-                    insuredEntity.setLastModifiedDt(new Date());
-                    insuredEntity.setClaimNo(claimNo);
-                    insuredEntity.setOccurrence(claimCanonical.getClaim().getOccurrence());
-                    insuredEntity.setCreatedBy(userInfoForm.getUserId());
-                    insuredEntity.setCreatedDt(new Date());
-                    insuredRepository.saveInsured(insuredEntity);
-                } else {
-                    for (com.aia.cmic.entity.Insured insuredUpdate : listInsuredEntity) {
-                        if (insuredUpdate.getInsuredId().equals(insured.getInsuredId())) {
-                            copyProperties(insured, insuredUpdate);
-                            insuredUpdate.setLastModifiedBy(userInfoForm.getUserId());
-                            insuredUpdate.setLastModifiedDt(new Date());
-                            insuredRepository.saveInsured(insuredUpdate);
+            if (isNewClaimFlag){
+                for (ClaimPolicyCanonical claimPolicyCanonical : listClaimPolicy) {
+                    Insured insured = claimPolicyCanonical.getInsured();
+                    if (insured.getInsuredId() == null) {
+                        com.aia.cmic.entity.Insured insuredEntity = new com.aia.cmic.entity.Insured();
+                        copyProperties(insured, insuredEntity);
+                        insuredEntity.setLastModifiedBy(userInfoForm.getUserId());
+                        insuredEntity.setLastModifiedDt(new Date());
+                        insuredEntity.setClaimNo(claimNo);
+                        insuredEntity.setOccurrence(claimCanonical.getClaim().getOccurrence());
+                        insuredEntity.setCreatedBy(userInfoForm.getUserId());
+                        insuredEntity.setCreatedDt(new Date());
+                        insuredRepository.saveInsured(insuredEntity);
+                    } else {
+                        for (com.aia.cmic.entity.Insured insuredUpdate : listInsuredEntity) {
+                            if (insuredUpdate.getInsuredId().equals(insured.getInsuredId())) {
+                                copyProperties(insured, insuredUpdate);
+                                insuredUpdate.setLastModifiedBy(userInfoForm.getUserId());
+                                insuredUpdate.setLastModifiedDt(new Date());
+                                insuredRepository.saveInsured(insuredUpdate);
+                            }
                         }
                     }
                 }
@@ -134,25 +136,27 @@
         }
         
         if (listClaimPolicy != null && listClaimPolicy.size() > 0) {
-            for (ClaimPolicyCanonical claimPolicyCanonical : listClaimPolicy) {
-                Payee payeeModel = claimPolicyCanonical.getPayee();
-                if (payeeModel.getPayeeId() == null) {
-                    com.aia.cmic.entity.Payee payeeEntity = new com.aia.cmic.entity.Payee();
-                    copyProperties(payeeModel, payeeEntity);
-                    payeeEntity.setLastModifiedBy(userInfoForm.getUserId());
-                    payeeEntity.setLastModifiedDt(new Date());
-                    payeeEntity.setClaimNo(claimNo);
-                    payeeEntity.setOccurrence(claimCanonical.getClaim().getOccurrence());
-                    payeeEntity.setCreatedBy(userInfoForm.getUserId());
-                    payeeEntity.setCreatedDt(new Date());
-                    payeeRepository.savePayee(payeeEntity);
-                } else {
-                    for (com.aia.cmic.entity.Payee payeeUpdate : listPayeeEntity) {
-                        if(payeeUpdate.getPayeeId().equals(payeeModel.getPayeeId())){
-                            copyProperties(payeeModel, payeeUpdate);
-                            payeeUpdate.setLastModifiedBy(userInfoForm.getUserId());
-                            payeeUpdate.setLastModifiedDt(new Date());
-                            payeeRepository.savePayee(payeeUpdate);
+            if (isNewClaimFlag) {
+                for (ClaimPolicyCanonical claimPolicyCanonical : listClaimPolicy) {
+                    Payee payeeModel = claimPolicyCanonical.getPayee();
+                    if (payeeModel.getPayeeId() == null) {
+                        com.aia.cmic.entity.Payee payeeEntity = new com.aia.cmic.entity.Payee();
+                        copyProperties(payeeModel, payeeEntity);
+                        payeeEntity.setLastModifiedBy(userInfoForm.getUserId());
+                        payeeEntity.setLastModifiedDt(new Date());
+                        payeeEntity.setClaimNo(claimNo);
+                        payeeEntity.setOccurrence(claimCanonical.getClaim().getOccurrence());
+                        payeeEntity.setCreatedBy(userInfoForm.getUserId());
+                        payeeEntity.setCreatedDt(new Date());
+                        payeeRepository.savePayee(payeeEntity);
+                    } else {
+                        for (com.aia.cmic.entity.Payee payeeUpdate : listPayeeEntity) {
+                            if(payeeUpdate.getPayeeId().equals(payeeModel.getPayeeId())){
+                                copyProperties(payeeModel, payeeUpdate);
+                                payeeUpdate.setLastModifiedBy(userInfoForm.getUserId());
+                                payeeUpdate.setLastModifiedDt(new Date());
+                                payeeRepository.savePayee(payeeUpdate);
+                            }
                         }
                     }
                 }
